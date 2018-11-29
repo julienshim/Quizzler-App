@@ -9,6 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    let allQuestions = QuestionBank()
+    var pickedAnswer: Bool = false
 
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -17,13 +20,31 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        let firstQuestion = allQuestions.list[0]
+        questionLabel.text = firstQuestion.questionText
     }
 
     
     @IBAction func answerPressed(_ sender: UIButton) {
+        if sender.tag == 1 {
+            pickedAnswer = true
+            checkAnswer()
+        } else if sender.tag == 2 {
+            pickedAnswer = false
+            checkAnswer()
+        }
         
+    }
+    
+    func checkAnswer() {
+        let correctAnswer = allQuestions.list[0].answer
         
+        if correctAnswer == pickedAnswer {
+            print("You got it!")
+        }  else {
+            print("Wrong!")
+        }
     }
     
     
