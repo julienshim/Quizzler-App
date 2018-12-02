@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     var pickedAnswer: Bool = false
     var questionNumber: Int = 0
     var score: Int = 0
+    var progressMessage: String = "Wrong!"
 
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -39,9 +40,11 @@ class ViewController: UIViewController {
             
         questionNumber += 1
         
-        nextQuestion()
-       
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + (Double(progressMessage.count) * 0.04 + 0.5)) {
+            self.nextQuestion()
+        }
+       
     }
     
     func updateUI() {
@@ -77,10 +80,12 @@ class ViewController: UIViewController {
         let correctAnswer = allQuestions.list[questionNumber].answer
         
         if correctAnswer == pickedAnswer {
-            ProgressHUD.showSuccess("Correct!")
+            progressMessage = "Correct!"
+            ProgressHUD.showSuccess(progressMessage)
             score += 1
         }  else {
-            ProgressHUD.showError("Wrong!")
+            progressMessage = "Wrong!"
+            ProgressHUD.showError(progressMessage)
         }
     }
     
