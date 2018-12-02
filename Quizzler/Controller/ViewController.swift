@@ -62,9 +62,7 @@ class ViewController: UIViewController {
             let alert = UIAlertController(title: "Awesome", message: "You finished the questions, do you want to start over?", preferredStyle: .alert)
             
             let restartAction = UIAlertAction(title: "Restart", style: .default, handler: { (UIAlertAction) in
-                
                 self.startOver()
-                
             })
             
             alert.addAction(restartAction)
@@ -79,14 +77,15 @@ class ViewController: UIViewController {
         let correctAnswer = allQuestions.list[questionNumber].answer
         
         if correctAnswer == pickedAnswer {
-            print("You got it!")
+            ProgressHUD.showSuccess("Correct!")
             score += 1
         }  else {
-            print("Wrong!")
+            ProgressHUD.showError("Wrong!")
         }
     }
     
     func startOver() {
+        
         score = 0
         questionNumber = 0
         nextQuestion()
