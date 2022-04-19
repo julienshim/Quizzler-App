@@ -2,100 +2,50 @@
 //  ViewController.swift
 //  Quizzler
 //
-//  Created by Julien Shim on 11/27/18.
-//  Copyright © 2018 Julien Shim. All rights reserved.
+//  Created by Julien Shim on 4/19/22.
 //
 
 import UIKit
 
 class ViewController: UIViewController {
-    
-    let allQuestions = QuestionBank()
-    var pickedAnswer: Bool = false
-    var questionNumber: Int = 0
-    var score: Int = 0
-    var progressMessage: String = "Wrong!"
 
-    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var progressBar: UIView!
-    @IBOutlet weak var progressLabel: UILabel!
+    @IBOutlet weak var questionLabel: UILabel!
+    @IBOutlet weak var progressBar: UIProgressView!
+    @IBOutlet weak var trueButton: UIButton!
+    @IBOutlet weak var falseButton: UIButton!
+    
+    var quizBrain = QuizBrain()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        nextQuestion()
+        // Do any additional setup after loading the view.
+        updateUI()
     }
 
-    
-    @IBAction func answerPressed(_ sender: UIButton) {
-        if sender.tag == 1 {
-            pickedAnswer = true
-        } else if sender.tag == 2 {
-            pickedAnswer = false
-        }
+    @IBAction func answerButtonPressed(_ sender: UIButton) {
         
-
-        checkAnswer()
-            
-        questionNumber += 1
+        let userAnswer = sender.currentTitle!
+        let userGotItRight = quizBrain.checkAnswer(userAnswer)
         
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + (Double(progressMessage.count) * 0.04 + 0.5)) {
-            self.nextQuestion()
-        }
-       
-    }
-    
-    func updateUI() {
-        scoreLabel.text = "Score: \(score)"
-        progressLabel.text = "\(questionNumber+1)/13"
-        progressBar.frame.size.width = (view.frame.size.width / 13) * CGFloat(questionNumber + 1)
-    }
-    
-    func nextQuestion() {
-        
-        if questionNumber <= 12 {
-            
-            questionLabel.text = allQuestions.list[questionNumber].questionText
-            updateUI()
-            
+        if userGotItRight {
+            sender.backgroundColor = UIColor.green
         } else {
-            
-            let alert = UIAlertController(title: "Awesome", message: "You finished the questions, do you want to start over?", preferredStyle: .alert)
-            
-            let restartAction = UIAlertAction(title: "Restart", style: .default, handler: { (UIAlertAction) in
-                self.startOver()
-            })
-            
-            alert.addAction(restartAction)
-            
-            present(alert, animated: true, completion: nil)
+            sender.backgroundColor = UIColor.red
         }
         
+        quizBrain.nextQuestion()
+        
+        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
+    }
+    
+    @objc func updateUI() {
+        questionLabel.text = quizBrain.getQuestionText()
+        progressBar.progress = quizBrain.getProgress()
+        scoreLabel.text = "Score: \(quizBrain.getScore())"
+        trueButton.backgroundColor = UIColor.clear
+        falseButton.backgroundColor = UIColor.clear
+    }
 
-    }
-    
-    func checkAnswer() {
-        let correctAnswer = allQuestions.list[questionNumber].answer
-        
-        if correctAnswer == pickedAnswer {
-            progressMessage = "Correct!"
-            ProgressHUD.showSuccess(progressMessage)
-            score += 1
-        }  else {
-            progressMessage = "Wrong!"
-            ProgressHUD.showError(progressMessage)
-        }
-    }
-    
-    func startOver() {
-        
-        score = 0
-        questionNumber = 0
-        nextQuestion()
-        
-    }
-    
 }
 
