@@ -2,8 +2,6 @@
 
 Quiz app for iOS
 
-## Demo
+## Screenshot
 
-### GIF
-
-<img src="https://raw.githubusercontent.com/julienshim/Quizzler/master/demo.gif" width="500" />
+<img src="https://github.com/julienshim/Quizzler-App/blob/master/Quizzler/Assets.xcassets/screenshot.png" width="500" />
