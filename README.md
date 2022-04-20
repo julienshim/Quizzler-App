@@ -10,4 +10,4 @@ Quiz app for iOS
 
 ### Multiple Choice
 
-<img src="https://github.com/julienshim/Quizzler-App/blob/master/Quizzler/Assets.xcassets/screenshot-mc.png" width="500" />
+<img src="https://github.com/julienshim/Quizzler-App/blob/master/QuizzlerMC/Assets.xcassets/screenshot-mc.png" width="500" />
